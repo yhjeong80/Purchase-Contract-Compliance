@@ -80,6 +80,15 @@
       flex-wrap: wrap;
     }
 
+    /* 메뉴 아이콘 공통 스타일 */
+    .card-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+    }
+
     .badge {
       padding: 2px 8px;
       border-radius: 999px;
@@ -218,8 +227,10 @@
     <div id="home-view">
       <div class="list">
 
+        <!-- 메뉴 1: 구매계약 체결 (계약 아이콘) -->
         <div class="card">
           <div class="card-header">
+            <img src="icons/contract_icon_192.png" alt="구매계약 체결 아이콘" class="card-icon">
             <span class="badge">GUIDELINE</span>
             <div class="card-title">구매계약 체결</div>
           </div>
@@ -231,8 +242,10 @@
           </div>
         </div>
 
+        <!-- 메뉴 2: TBD (공사중 아이콘) -->
         <div class="card">
           <div class="card-header">
+            <img src="icons/construction_icon_192.png" alt="준비 중 아이콘" class="card-icon">
             <span class="badge badge-muted">TBD</span>
             <div class="card-title">TBD</div>
           </div>
