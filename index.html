@@ -3,25 +3,347 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#ffffff">
-  <title>My PDF App</title>
+  <meta name="description" content="구매계약 체결 컴플라이언스 가이드라인과 교육 자료를 제공합니다.">
+
+  <title>Purchasing Contract Compliance</title>
 
   <!-- iOS icons & standalone -->
   <link rel="apple-touch-icon" href="icons/icon-192.png">
-  <meta name="apple-mobile-web-app-title" content="My PDF App">
+  <meta name="apple-mobile-web-app-title" content="Purchasing Contract Compliance">
   <meta name="apple-mobile-web-app-capable" content="yes">
 
   <style>
-    html,body{height:100%;margin:0}
-    iframe{border:0;width:100%;height:100%}
+    :root {
+      --primary: #2563eb;
+      --primary-soft: #e0ebff;
+      --text-main: #111827;
+      --text-sub: #6b7280;
+      --bg: #f3f4f6;
+      --card-bg: #ffffff;
+      --border-radius: 14px;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text-main);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 16px 40px;
+    }
+
+    header {
+      text-align: center;
+      padding: 24px 16px 18px;
+      margin-bottom: 16px;
+      border-radius: 0 0 24px 24px;
+      background: linear-gradient(135deg, #eff6ff, #ffffff);
+      box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04);
+    }
+
+    header h1 {
+      font-size: 1.7rem;
+      margin: 0 0 6px;
+    }
+
+    header p {
+      margin: 0;
+      color: var(--text-sub);
+      font-size: 0.9rem;
+    }
+
+    /* 공통 카드 스타일 */
+    .card {
+      background: var(--card-bg);
+      padding: 18px 18px 16px;
+      margin-bottom: 14px;
+      border-radius: var(--border-radius);
+      box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .badge {
+      padding: 2px 8px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      background: var(--primary-soft);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .badge-muted {
+      background: #e5e7eb;
+      color: #6b7280;
+    }
+
+    .card-title {
+      font-size: 1rem;
+      font-weight: 600;
+    }
+
+    .card-desc {
+      font-size: 0.87rem;
+      color: var(--text-sub);
+      line-height: 1.5;
+    }
+
+    .btn-row { margin-top: 4px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      padding: 8px 16px;
+      background: var(--primary);
+      color: white;
+      border-radius: 999px;
+      font-size: 0.87rem;
+      text-decoration: none;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn:hover { opacity: 0.95; }
+    .btn:active { transform: translateY(1px); }
+    .btn:focus-visible {
+      outline: 2px solid #1d4ed8;
+      outline-offset: 3px;
+    }
+
+    .btn-disabled {
+      background: #e5e7eb;
+      color: #9ca3af;
+      cursor: default;
+    }
+
+    .btn-disabled:hover {
+      opacity: 1;
+      transform: none;
+    }
+
+    .list {
+      margin-top: 24px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .list .card {
+      margin-bottom: 0;
+    }
+
+    footer {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .container { padding-top: 40px; }
+      header h1 { font-size: 1.9rem; }
+      .card { padding: 20px 22px 18px; }
+    }
+
+    @media (max-width: 640px) {
+      .list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 서브 화면용 스타일 */
+    .view-title {
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin: 4px 0 8px;
+    }
+
+    .view-subtitle {
+      font-size: 0.9rem;
+      color: var(--text-sub);
+      margin: 0 0 16px;
+      line-height: 1.5;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--primary);
+      background: var(--primary);
+      font-size: 0.8rem;
+      cursor: pointer;
+      color: #ffffff;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+
+    .back-btn:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    .tag {
+      font-size: 0.72rem;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px dashed #d1d5db;
+      color: #6b7280;
+      background: #f9fafb;
+    }
   </style>
 </head>
+
 <body>
-  <!-- PDF.js custom viewer (with toolbar) -->
-  <iframe src="pdfjs/viewer.html?file=../your.pdf#zoom=page-width"></iframe>
+  <div class="container">
+    <header>
+      <h1>Purchasing Contract Compliance</h1>
+      <p>
+        구매계약 체결 관련 컴플라이언스 가이드라인과 교육 자료를 한 곳에서 확인할 수 있습니다.
+      </p>
+    </header>
+
+    <!-- 홈 화면: 두 개의 메인 메뉴 -->
+    <div id="home-view">
+      <div class="list">
+        <!-- 메뉴 1: 구매계약 체결 -->
+        <div class="card">
+          <div class="card-header">
+            <span class="badge">GUIDELINE</span>
+            <div class="card-title">구매계약 체결</div>
+          </div>
+          <div class="card-desc">
+            구매계약 체결과 관련된 컴플라이언스 Guideline 및 교육 동영상을 확인할 수 있습니다.
+          </div>
+          <div class="btn-row">
+            <button class="btn" id="open-contract">
+              열기
+            </button>
+          </div>
+        </div>
+
+        <!-- 메뉴 2: TBD (향후 확장용) -->
+        <div class="card">
+          <div class="card-header">
+            <span class="badge badge-muted">TBD</span>
+            <div class="card-title">TBD</div>
+          </div>
+          <div class="card-desc">
+            향후 추가될 Compliance 주제를 위해 예약된 메뉴입니다.
+          </div>
+          <div class="btn-row">
+            <button class="btn btn-disabled" type="button">
+              준비 중
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 서브 화면 1: 구매계약 체결 메뉴 -->
+    <div id="contract-view" style="display:none;">
+      <button class="back-btn" id="back-home">
+        ← 목록으로 돌아가기
+      </button>
+
+      <div class="view-title">구매계약 체결</div>
+      <p class="view-subtitle">
+        아래 메뉴를 통해 구매계약 체결 Guideline 문서와 교육 동영상을 확인할 수 있습니다.
+      </p>
+
+      <!-- 메뉴 1-1: Guideline 문서뷰어 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="badge">PDF</span>
+          <div class="card-title">구매계약 체결 Guideline (문서 보기)</div>
+        </div>
+        <div class="card-desc">
+          구매계약 체결 절차, 필수 검토사항, 위험 요소 및 내부 통제 포인트 등을 정리한 Guideline 문서를
+          PDF Viewer로 확인할 수 있습니다.
+        </div>
+        <div class="btn-row">
+          <!-- ⬇️ 여기 file= 뒤의 경로를 실제 PDF 파일명으로 변경해서 사용하시면 됩니다. -->
+          <a class="btn"
+             href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf#zoom=page-width">
+            문서 열기
+          </a>
+        </div>
+      </div>
+
+      <!-- 메뉴 1-2: 교육 동영상 링크 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="badge">VIDEO</span>
+          <div class="card-title">구매계약 체결 교육 동영상</div>
+        </div>
+        <div class="card-desc">
+          구매계약 체결 컴플라이언스 교육용 동영상을 재생합니다. 교육용으로 활용하실 수 있도록
+          별도의 설명과 함께 구성되어 있습니다.
+        </div>
+        <div class="btn-row">
+          <!--
+            ⬇️ 이 링크를 어제 말씀하셨던 실제 동영상 URL로 교체하시면 됩니다.
+            예: YouTube 링크, 사내 동영상 서버 URL 등
+          -->
+          <a class="btn"
+             id="contract-video-link"
+             href="https://example.com/purchasing-contract-video"
+             target="_blank"
+             rel="noopener">
+            동영상 보기
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <footer>Purchasing Contract Compliance – Web App</footer>
+  </div>
 
   <script>
+    const homeView = document.getElementById('home-view');
+    const contractView = document.getElementById('contract-view');
+    const openContractBtn = document.getElementById('open-contract');
+    const backHomeBtn = document.getElementById('back-home');
+
+    function showContract() {
+      homeView.style.display = 'none';
+      contractView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    function showHome() {
+      contractView.style.display = 'none';
+      homeView.style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
+
+    openContractBtn.addEventListener('click', showContract);
+    backHomeBtn.addEventListener('click', showHome);
+
+    // PWA service worker
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js').catch(console.error);
     }
