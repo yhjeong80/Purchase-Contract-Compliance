@@ -62,6 +62,7 @@
       font-size: 0.9rem;
     }
 
+    /* 기본 카드 (세로 배치) */
     .card {
       background: var(--card-bg);
       padding: 18px 18px 16px;
@@ -73,29 +74,40 @@
       gap: 8px;
     }
 
+    /* 메인 메뉴용 가로형 카드 */
+    .card-horizontal {
+      display: grid;
+      grid-template-columns: 130px 1fr;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .card-left {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .card-right {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
     .card-header {
       display: flex;
-      align-items: flex-start;
-      gap: 12px;
-      flex-wrap: nowrap;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
     }
 
     /* 메뉴 아이콘 공통 스타일 */
     .card-icon {
-      width: 56px;
-      height: 56px;
-      border-radius: 12px;
+      width: 96px;
+      height: 96px;
+      border-radius: 20px;
       object-fit: cover;
-      flex-shrink: 0;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-    }
-
-    /* 아이콘 오른쪽 텍스트 묶음 */
-    .header-text {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-      min-width: 0;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.18);
     }
 
     .badge {
@@ -189,6 +201,13 @@
       .list {
         grid-template-columns: 1fr;
       }
+      .card-horizontal {
+        grid-template-columns: 1fr;
+        justify-items: flex-start;
+      }
+      .card-left {
+        justify-content: flex-start;
+      }
     }
 
     .view-title {
@@ -240,40 +259,44 @@
       <div class="list">
 
         <!-- 메뉴 1: 구매계약 체결 (계약 아이콘) -->
-        <div class="card">
-          <div class="card-header">
+        <div class="card card-horizontal">
+          <div class="card-left">
             <img src="icons/contract_icon_192.png"
                  alt="구매계약 체결 아이콘"
                  class="card-icon">
-            <div class="header-text">
+          </div>
+          <div class="card-right">
+            <div class="card-header">
               <span class="badge">GUIDELINE</span>
               <div class="card-title">구매계약 체결</div>
             </div>
-          </div>
-          <div class="card-desc">
-            구매계약 체결과 관련된 Compliance 가이드라인 및 교육 영상을 확인할 수 있습니다.
-          </div>
-          <div class="btn-row">
-            <button class="btn" id="open-contract">열기</button>
+            <div class="card-desc">
+              구매계약 체결과 관련된 Compliance 가이드라인 및 교육 영상을 확인할 수 있습니다.
+            </div>
+            <div class="btn-row">
+              <button class="btn" id="open-contract">열기</button>
+            </div>
           </div>
         </div>
 
         <!-- 메뉴 2: TBD (공사중 아이콘) -->
-        <div class="card">
-          <div class="card-header">
+        <div class="card card-horizontal">
+          <div class="card-left">
             <img src="icons/construction_icon_192.png"
                  alt="준비 중 아이콘"
                  class="card-icon">
-            <div class="header-text">
+          </div>
+          <div class="card-right">
+            <div class="card-header">
               <span class="badge badge-muted">TBD</span>
               <div class="card-title">TBD</div>
             </div>
-          </div>
-          <div class="card-desc">
-            향후 추가될 Compliance 가이드라인 항목을 위해 예약된 메뉴입니다.
-          </div>
-          <div class="btn-row">
-            <button class="btn btn-disabled" type="button">준비 중</button>
+            <div class="card-desc">
+              향후 추가될 Compliance 가이드라인 항목을 위해 예약된 메뉴입니다.
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-disabled" type="button">준비 중</button>
+            </div>
           </div>
         </div>
 
