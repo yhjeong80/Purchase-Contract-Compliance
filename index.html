@@ -75,18 +75,27 @@
 
     .card-header {
       display: flex;
-      align-items: center;
-      gap: 8px;
-      flex-wrap: wrap;
+      align-items: flex-start;
+      gap: 12px;
+      flex-wrap: nowrap;
     }
 
     /* 메뉴 아이콘 공통 스타일 */
     .card-icon {
-      width: 40px;
-      height: 40px;
-      border-radius: 10px;
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
       object-fit: cover;
       flex-shrink: 0;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    /* 아이콘 오른쪽 텍스트 묶음 */
+    .header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      min-width: 0;
     }
 
     .badge {
@@ -96,6 +105,8 @@
       background: var(--primary-soft);
       color: var(--primary);
       font-weight: 600;
+      white-space: nowrap;
+      align-self: flex-start;
     }
 
     .badge-muted {
@@ -224,15 +235,20 @@
       </p>
     </header>
 
+    <!-- 홈 화면 -->
     <div id="home-view">
       <div class="list">
 
         <!-- 메뉴 1: 구매계약 체결 (계약 아이콘) -->
         <div class="card">
           <div class="card-header">
-            <img src="icons/contract_icon_192.png" alt="구매계약 체결 아이콘" class="card-icon">
-            <span class="badge">GUIDELINE</span>
-            <div class="card-title">구매계약 체결</div>
+            <img src="icons/contract_icon_192.png"
+                 alt="구매계약 체결 아이콘"
+                 class="card-icon">
+            <div class="header-text">
+              <span class="badge">GUIDELINE</span>
+              <div class="card-title">구매계약 체결</div>
+            </div>
           </div>
           <div class="card-desc">
             구매계약 체결과 관련된 Compliance 가이드라인 및 교육 영상을 확인할 수 있습니다.
@@ -245,9 +261,13 @@
         <!-- 메뉴 2: TBD (공사중 아이콘) -->
         <div class="card">
           <div class="card-header">
-            <img src="icons/construction_icon_192.png" alt="준비 중 아이콘" class="card-icon">
-            <span class="badge badge-muted">TBD</span>
-            <div class="card-title">TBD</div>
+            <img src="icons/construction_icon_192.png"
+                 alt="준비 중 아이콘"
+                 class="card-icon">
+            <div class="header-text">
+              <span class="badge badge-muted">TBD</span>
+              <div class="card-title">TBD</div>
+            </div>
           </div>
           <div class="card-desc">
             향후 추가될 Compliance 가이드라인 항목을 위해 예약된 메뉴입니다.
@@ -260,6 +280,7 @@
       </div>
     </div>
 
+    <!-- 서브 화면: 구매계약 체결 -->
     <div id="contract-view" style="display:none;">
       <button class="back-btn" id="back-home">
         ← 목록으로 돌아가기
@@ -276,10 +297,12 @@
           <div class="card-title">구매계약 체결 가이드라인 (문서 보기)</div>
         </div>
         <div class="card-desc">
-          구매계약 체결 절차, 필수 검토사항, 위험 요소 및 내부 통제 포인트 등을 정리한 가이드라인 문서를 PDF Viewer로 확인할 수 있습니다.
+          구매계약 체결 절차, 필수 검토사항, 위험 요소 및 내부 통제 포인트 등을 정리한 가이드라인 문서를
+          PDF Viewer로 확인할 수 있습니다.
         </div>
         <div class="btn-row">
-          <a class="btn" href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf#zoom=page-width">
+          <a class="btn"
+             href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf#zoom=page-width">
             문서 열기
           </a>
         </div>
