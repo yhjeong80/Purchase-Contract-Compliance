@@ -1,4 +1,4 @@
-const CACHE_NAME = 'pdf-app-cache-v3';
+const CACHE_NAME = 'pdf-app-cache-v4'; // 🔁 버전 올려서 예전 캐시 무효화
 
 // HTML 말고, 진짜 "정적 리소스"만 선캐싱
 const PRECACHE = [
@@ -7,7 +7,7 @@ const PRECACHE = [
   './pdfjs/viewer.html',
   './pdfjs/viewer.css',
   './pdfjs/app.js'
-  // 주의: ./index.html 이나 ./your.pdf 는 여기서 빼둡니다 (네트워크 우선으로 처리할 거라서)
+  // 주의: ./index.html 이나 개별 PDF 는 여기서 빼둡니다 (네트워크 우선으로 처리할 거라서)
 ];
 
 // 설치 시: 정적 리소스 캐싱 + 즉시 활성화 준비
@@ -15,7 +15,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME).then(cache => cache.addAll(PRECACHE))
   );
-  self.skipWaiting(); // 새 SW가 바로 대기 상태 넘어가도록
+  self.skipWaiting(); // 새 SW가 바로 대기 상태로 넘어가도록
 });
 
 // 활성화 시: 이전 캐시들 정리 + 클라이언트 장악
@@ -37,6 +37,11 @@ self.addEventListener('activate', event => {
 self.addEventListener('fetch', event => {
   const { request } = event;
   const url = new URL(request.url);
+
+  // 🔹 외부 도메인(YouTube 등)은 SW가 건드리지 않고 네트워크에 맡김
+  if (url.origin !== self.location.origin) {
+    return; // 그냥 브라우저 기본 동작(네트워크)으로 처리
+  }
 
   // 1) HTML, PDF 는 "네트워크 우선" 전략
   const isHtmlRequest =
@@ -68,7 +73,7 @@ async function networkFirst(request) {
     const cached = await cache.match(request);
     if (cached) return cached;
 
-    // 네비게이션 요청인데 index.html 캐시가 있으면 fallback
+    // 네비게이션 요청인데 ./ 캐시가 있으면 fallback
     if (request.mode === 'navigate') {
       const fallback = await cache.match('./');
       if (fallback) return fallback;
