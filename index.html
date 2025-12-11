@@ -229,6 +229,26 @@
       background: #1d4ed8;
       border-color: #1d4ed8;
     }
+
+    /* 동영상 영역 (반응형 16:9) */
+    .video-wrapper {
+      position: relative;
+      width: 100%;
+      padding-top: 56.25%; /* 16:9 비율 */
+      border-radius: 12px;
+      overflow: hidden;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+      margin-top: 10px;
+    }
+
+    .video-wrapper iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
   </style>
 </head>
 
@@ -297,6 +317,7 @@
         아래 메뉴를 통해 구매계약 체결 관련 Compliance 가이드라인 문서와 교육 영상을 확인할 수 있습니다.
       </p>
 
+      <!-- PDF 가이드라인 카드 -->
       <div class="card">
         <div class="card-header">
           <span class="badge">PDF</span>
@@ -314,6 +335,7 @@
         </div>
       </div>
 
+      <!-- 교육 영상 카드 -->
       <div class="card">
         <div class="card-header">
           <span class="badge">VIDEO</span>
@@ -323,11 +345,22 @@
           구매계약 체결 Compliance 교육용 영상입니다. 실제 사례 기반 설명을 포함하고 있어 실무 이해에 도움이 됩니다.
         </div>
         <div class="btn-row">
-          <a class="btn" id="contract-video-link"
-             href="https://example.com/purchasing-contract-video"
-             target="_blank" rel="noopener">
+          <!-- 버튼을 누르면 아래 YouTube iframe 이 보이도록 처리 -->
+          <button class="btn" type="button" id="play-contract-video">
             영상 보기
-          </a>
+          </button>
+        </div>
+
+        <!-- 처음에는 숨겨진 상태, 버튼 클릭 시 노출 -->
+        <div id="contract-video-container" style="display:none;">
+          <div class="video-wrapper">
+            <iframe
+              src="https://www.youtube.com/embed/ejWTdx5pTec"
+              title="구매계약 체결 교육 영상"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
         </div>
       </div>
 
@@ -341,6 +374,9 @@
     const contractView = document.getElementById('contract-view');
     const openContractBtn = document.getElementById('open-contract');
     const backHomeBtn = document.getElementById('back-home');
+
+    const playVideoBtn = document.getElementById('play-contract-video');
+    const contractVideoContainer = document.getElementById('contract-video-container');
 
     function showContract() {
       homeView.style.display = 'none';
@@ -356,6 +392,14 @@
 
     openContractBtn.addEventListener('click', showContract);
     backHomeBtn.addEventListener('click', showHome);
+
+    // "영상 보기" 버튼 클릭 시 YouTube 플레이어 노출
+    if (playVideoBtn && contractVideoContainer) {
+      playVideoBtn.addEventListener('click', function () {
+        contractVideoContainer.style.display = 'block';
+        contractVideoContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
+    }
 
     if ('serviceWorker' in navigator) {
       navigator.serviceWorker.register('service-worker.js').catch(console.error);
