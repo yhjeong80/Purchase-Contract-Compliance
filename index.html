@@ -62,6 +62,7 @@
       font-size: 0.9rem;
     }
 
+    /* 공통 카드 스타일 */
     .card {
       background: var(--card-bg);
       padding: 18px 18px 16px;
@@ -70,6 +71,7 @@
       box-shadow: 0 4px 12px rgba(15, 23, 42, 0.06);
     }
 
+    /* 홈 화면 카드: 아이콘 + 오른쪽 텍스트 전체 */
     .home-card {
       display: flex;
       align-items: flex-start;
@@ -84,6 +86,7 @@
       min-width: 0;
     }
 
+    /* 카드 헤더(배지 + 제목) */
     .card-header {
       display: flex;
       align-items: center;
@@ -91,6 +94,7 @@
       flex-wrap: wrap;
     }
 
+    /* 메뉴 아이콘 공통 스타일 */
     .card-icon {
       width: 70px;
       height: 70px;
@@ -107,6 +111,7 @@
       background: var(--primary-soft);
       color: var(--primary);
       font-weight: 600;
+      white-space: nowrap;
     }
 
     .badge-muted {
@@ -143,10 +148,22 @@
       cursor: pointer;
     }
 
+    .btn:hover { opacity: 0.95; }
+    .btn:active { transform: translateY(1px); }
+    .btn:focus-visible {
+      outline: 2px solid #1d4ed8;
+      outline-offset: 3px;
+    }
+
     .btn-disabled {
       background: #e5e7eb;
       color: #9ca3af;
       cursor: default;
+    }
+
+    .btn-disabled:hover {
+      opacity: 1;
+      transform: none;
     }
 
     .list {
@@ -156,10 +173,30 @@
       gap: 14px;
     }
 
-    @media (max-width: 640px) {
-      .list { grid-template-columns: 1fr; }
+    .list .card {
+      margin-bottom: 0;
     }
 
+    footer {
+      margin-top: 24px;
+      font-size: 0.78rem;
+      color: #9ca3af;
+      text-align: center;
+    }
+
+    @media (min-width: 640px) {
+      .container { padding-top: 40px; }
+      header h1 { font-size: 1.9rem; }
+      .card { padding: 20px 22px 18px; }
+    }
+
+    @media (max-width: 640px) {
+      .list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* 서브 화면용 스타일 */
     .view-title {
       font-size: 1.25rem;
       font-weight: 600;
@@ -169,7 +206,8 @@
     .view-subtitle {
       font-size: 0.9rem;
       color: var(--text-sub);
-      margin-bottom: 16px;
+      margin: 0 0 16px;
+      line-height: 1.5;
     }
 
     .back-btn {
@@ -178,27 +216,35 @@
       gap: 4px;
       padding: 6px 12px;
       border-radius: 999px;
+      border: 1px solid var(--primary);
       background: var(--primary);
-      color: #fff;
       font-size: 0.8rem;
+      cursor: pointer;
+      color: #ffffff;
       font-weight: 600;
       margin-bottom: 12px;
-      border: none;
-      cursor: pointer;
     }
 
+    .back-btn:hover {
+      background: #1d4ed8;
+      border-color: #1d4ed8;
+    }
+
+    /* 동영상 영역 (반응형 16:9) */
     .video-wrapper {
       position: relative;
       width: 100%;
-      padding-top: 56.25%;
+      padding-top: 56.25%; /* 16:9 비율 */
       border-radius: 12px;
       overflow: hidden;
+      box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
       margin-top: 10px;
     }
 
     .video-wrapper iframe {
       position: absolute;
-      inset: 0;
+      top: 0;
+      left: 0;
       width: 100%;
       height: 100%;
       border: 0;
@@ -210,15 +256,20 @@
   <div class="container">
     <header>
       <h1>Compliance Guideline</h1>
-      <p>회사 업무 수행과 관련한 주요 Compliance 가이드라인과 교육 자료를 제공합니다.</p>
+      <p>
+        회사 업무 수행과 관련한 주요 Compliance 가이드라인과 교육 자료를 제공합니다.
+      </p>
     </header>
 
     <!-- 홈 화면 -->
     <div id="home-view">
       <div class="list">
 
+        <!-- 메뉴 1: 구매계약 체결 (계약 아이콘) -->
         <div class="card home-card">
-          <img src="icons/contract_icon_192.png" class="card-icon">
+          <img src="icons/contract_icon_192.png"
+               alt="구매계약 체결 아이콘"
+               class="card-icon">
           <div class="home-card-main">
             <div class="card-header">
               <span class="badge">GUIDELINE</span>
@@ -233,30 +284,86 @@
           </div>
         </div>
 
+        <!-- 메뉴 2: TBD (공사중 아이콘) -->
+        <div class="card home-card">
+          <img src="icons/construction_icon_192.png"
+               alt="준비 중 아이콘"
+               class="card-icon">
+          <div class="home-card-main">
+            <div class="card-header">
+              <span class="badge badge-muted">TBD</span>
+              <div class="card-title">TBD</div>
+            </div>
+            <div class="card-desc">
+              향후 추가될 Compliance 가이드라인 항목을 위해 예약된 메뉴입니다.
+            </div>
+            <div class="btn-row">
+              <button class="btn btn-disabled" type="button">준비 중</button>
+            </div>
+          </div>
+        </div>
+
       </div>
     </div>
 
-    <!-- 2번째 화면 -->
+    <!-- 서브 화면: 구매계약 체결 -->
     <div id="contract-view" style="display:none;">
-      <button class="back-btn" id="back-home">← 목록으로 돌아가기</button>
+      <button class="back-btn" id="back-home">
+        ← 목록으로 돌아가기
+      </button>
 
       <div class="view-title">구매계약 체결</div>
       <p class="view-subtitle">
-        구매계약 체결 관련 Compliance 가이드라인 문서와 교육 영상을 확인할 수 있습니다.
+        아래 메뉴를 통해 구매계약 체결 관련 Compliance 가이드라인 문서와 교육 영상을 확인할 수 있습니다.
       </p>
 
+      <!-- PDF 가이드라인 카드 -->
       <div class="card">
         <div class="card-header">
           <span class="badge">PDF</span>
-          <div class="card-title">구매계약 체결 가이드라인</div>
+          <div class="card-title">구매계약 체결 가이드라인 (문서 보기)</div>
+        </div>
+        <div class="card-desc">
+          구매계약 체결 절차, 필수 검토사항, 위험 요소 및 내부 통제 포인트 등을 정리한 가이드라인 문서를
+          PDF Viewer로 확인할 수 있습니다.
         </div>
         <div class="btn-row">
           <a class="btn"
-             href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf&return=../index.html%23contract-view#zoom=page-width">
+             href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf#zoom=page-width">
             문서 열기
           </a>
         </div>
       </div>
+
+      <!-- 교육 영상 카드 -->
+      <div class="card">
+        <div class="card-header">
+          <span class="badge">VIDEO</span>
+          <div class="card-title">구매계약 체결 교육 영상</div>
+        </div>
+        <div class="card-desc">
+          구매계약 체결 Compliance 교육용 영상입니다. 실제 사례 기반 설명을 포함하고 있어 실무 이해에 도움이 됩니다.
+        </div>
+        <div class="btn-row">
+          <!-- 버튼을 누르면 아래 YouTube iframe 이 보이도록 처리 -->
+          <button class="btn" type="button" id="play-contract-video">
+            영상 보기
+          </button>
+        </div>
+
+        <!-- 처음에는 숨겨진 상태, 버튼 클릭 시 노출 -->
+        <div id="contract-video-container" style="display:none;">
+          <div class="video-wrapper">
+            <iframe
+              src="https://www.youtube.com/embed/ejWTdx5pTec"
+              title="구매계약 체결 교육 영상"
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen>
+            </iframe>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <footer>Compliance Guideline – Web App</footer>
@@ -268,25 +375,30 @@
     const openContractBtn = document.getElementById('open-contract');
     const backHomeBtn = document.getElementById('back-home');
 
+    const playVideoBtn = document.getElementById('play-contract-video');
+    const contractVideoContainer = document.getElementById('contract-video-container');
+
     function showContract() {
       homeView.style.display = 'none';
       contractView.style.display = 'block';
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function showHome() {
       contractView.style.display = 'none';
       homeView.style.display = 'block';
-      history.replaceState(null, '', 'index.html');
-      window.scrollTo(0, 0);
+      window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     openContractBtn.addEventListener('click', showContract);
     backHomeBtn.addEventListener('click', showHome);
 
-    // ✅ viewer → 돌아올 때 (#contract-view)
-    if (window.location.hash === '#contract-view') {
-      showContract();
+    // "영상 보기" 버튼 클릭 시 YouTube 플레이어 노출
+    if (playVideoBtn && contractVideoContainer) {
+      playVideoBtn.addEventListener('click', function () {
+        contractVideoContainer.style.display = 'block';
+        contractVideoContainer.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      });
     }
 
     if ('serviceWorker' in navigator) {

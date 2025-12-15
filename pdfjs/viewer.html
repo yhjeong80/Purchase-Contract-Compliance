@@ -2,23 +2,24 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <!-- 🔹 Allow pinch-zoom -->
+  <!-- 🔹 Allow pinch-zoom: user-scalable=yes & higher maximum-scale -->
   <meta name="viewport"
         content="width=device-width,initial-scale=1,maximum-scale=5,user-scalable=yes">
 
-  <!-- 🔥 Google Analytics 4 (GA4) -->
+  <!-- 🔥 Google Analytics 4 (GA4) Tracking Code -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-YSLLZEP6QN"></script>
   <script>
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
 
-    // 🔹 PDF 파일명 기준 GA4 page_title 설정
+    // 🔹 PDF 파일명에 따라 GA4용 페이지 제목을 다르게 설정
     (function () {
       try {
         const params = new URLSearchParams(window.location.search);
         const file = params.get("file") || "";
         let title = "PDF Viewer";
 
+        // 파일 이름 기준으로 분기 (필요하면 자유롭게 추가 가능)
         if (file.includes("US-Biztrip-Guideline-KO")) {
           title = "US Biztrip Compliance Guideline – KO – PDF Viewer";
         } else if (file.includes("US-Biztrip-Guideline-EN")) {
@@ -33,8 +34,10 @@
           title = "US Biztrip Summary – EN – PDF Viewer";
         }
 
+        // 실제 브라우저 탭 제목 변경 → GA4 page_title도 이 값으로 찍힘
         document.title = title;
       } catch (e) {
+        // 에러 나도 페이지 동작에는 영향 없게 그냥 무시
         console.error(e);
       }
     })();
@@ -42,11 +45,13 @@
     gtag('js', new Date());
     gtag('config', 'G-YSLLZEP6QN');
   </script>
+  <!-- 🔥 GA4 코드 끝 -->
 
+  <!-- 기본 title (위 스크립트에서 곧바로 덮어씀) -->
   <title>PDF Viewer</title>
   <link rel="stylesheet" href="viewer.css">
 
-  <!-- 🔹 HOME 버튼 & 모바일 제스처 -->
+  <!-- 🔹 HOME button & pinch-zoom related styles -->
   <style>
     .toolbar .home-link {
       margin-right: 8px;
@@ -60,11 +65,13 @@
       display: inline-block;
     }
 
+    /* 🔹 Allow pinch-zoom on the canvas area */
     #viewer-wrap,
     #pdf-render {
       touch-action: pinch-zoom;
     }
 
+    /* 🔹 (Optional) Hide zoom UI on mobile devices */
     @media (pointer: coarse) {
       #zoom-out,
       #zoom-in,
@@ -75,7 +82,7 @@
     }
   </style>
 
-  <!-- PDF.js -->
+  <!-- PDF.js via CDN -->
   <script src="https://cdn.jsdelivr.net/npm/pdfjs-dist@3.11.174/build/pdf.min.js"></script>
   <script>
     pdfjsLib.GlobalWorkerOptions.workerSrc =
@@ -85,8 +92,8 @@
 
 <body>
   <div class="toolbar">
-    <!-- 🔹 HOME / BACK 버튼 -->
-    <a id="homeBtn" href="../index.html" class="home-link">← HOME</a>
+    <!-- 🔹 Link back to HOME -->
+    <a href="../index.html" class="home-link">← HOME</a>
 
     <button id="prev">◀</button>
     <span>
@@ -97,6 +104,7 @@
 
     <span class="spacer"></span>
 
+    <!-- 🔹 Keep zoom controls (automatically hidden on mobile) -->
     <button id="zoom-out">－</button>
     <span id="zoom">100%</span>
     <button id="zoom-in">＋</button>
@@ -106,25 +114,6 @@
   <div id="viewer-wrap">
     <canvas id="pdf-render"></canvas>
   </div>
-
-  <!-- ✅ return 파라미터 기반 HOME 이동 -->
-  <script>
-    (function () {
-      try {
-        const params = new URLSearchParams(window.location.search);
-        const ret = params.get("return"); // ../index.html%23contract-view
-        const homeBtn = document.getElementById("homeBtn");
-
-        if (!homeBtn) return;
-
-        homeBtn.href = ret
-          ? decodeURIComponent(ret)
-          : "../index.html";
-      } catch (e) {
-        console.error(e);
-      }
-    })();
-  </script>
 
   <script src="app.js"></script>
 </body>
