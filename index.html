@@ -223,6 +223,7 @@
       color: #ffffff;
       font-weight: 600;
       margin-bottom: 12px;
+      white-space: nowrap; /* ✅ 추가: 모바일에서 줄바꿈 방지 */
     }
 
     .back-btn:hover {
@@ -309,7 +310,7 @@
     <!-- 서브 화면: 구매계약 체결 -->
     <div id="contract-view" style="display:none;">
       <button class="back-btn" id="back-home">
-        ← 목록으로 돌아가기
+        목록으로 돌아가기
       </button>
 
       <div class="view-title">구매계약 체결</div>
@@ -345,13 +346,11 @@
           구매계약 체결 Compliance 교육용 영상입니다. 실제 사례 기반 설명을 포함하고 있어 실무 이해에 도움이 됩니다.
         </div>
         <div class="btn-row">
-          <!-- 버튼을 누르면 아래 YouTube iframe 이 보이도록 처리 -->
           <button class="btn" type="button" id="play-contract-video">
             영상 보기
           </button>
         </div>
 
-        <!-- 처음에는 숨겨진 상태, 버튼 클릭 시 노출 -->
         <div id="contract-video-container" style="display:none;">
           <div class="video-wrapper">
             <iframe
@@ -381,14 +380,13 @@
     function showContract() {
       homeView.style.display = 'none';
       contractView.style.display = 'block';
-      window.location.hash = '#contract'; // ✅ 현재 뷰 상태를 해시에 반영
+      window.location.hash = '#contract';
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function showHome() {
       contractView.style.display = 'none';
       homeView.style.display = 'block';
-      // ✅ 홈으로 돌아오면 해시 제거(또는 #home으로)
       if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
@@ -396,7 +394,6 @@
     openContractBtn.addEventListener('click', showContract);
     backHomeBtn.addEventListener('click', showHome);
 
-    // ✅ 새로고침/직접 진입 시 해시 기반으로 화면 복원
     function syncViewFromHash() {
       const hash = (window.location.hash || '').toLowerCase();
       if (hash === '#contract') {
@@ -407,11 +404,8 @@
     }
 
     window.addEventListener('hashchange', syncViewFromHash);
-
-    // 첫 로드에서도 반영
     syncViewFromHash();
 
-    // "영상 보기" 버튼 클릭 시 YouTube 플레이어 노출
     if (playVideoBtn && contractVideoContainer) {
       playVideoBtn.addEventListener('click', function () {
         contractVideoContainer.style.display = 'block';
