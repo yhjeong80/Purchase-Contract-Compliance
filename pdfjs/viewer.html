@@ -37,7 +37,6 @@
         // 실제 브라우저 탭 제목 변경 → GA4 page_title도 이 값으로 찍힘
         document.title = title;
       } catch (e) {
-        // 에러 나도 페이지 동작에는 영향 없게 그냥 무시
         console.error(e);
       }
     })();
@@ -47,12 +46,12 @@
   </script>
   <!-- 🔥 GA4 코드 끝 -->
 
-  <!-- 기본 title (위 스크립트에서 곧바로 덮어씀) -->
   <title>PDF Viewer</title>
   <link rel="stylesheet" href="viewer.css">
 
   <!-- 🔹 HOME button & pinch-zoom related styles -->
   <style>
+    .toolbar .nav-link,
     .toolbar .home-link {
       margin-right: 8px;
       padding: 4px 10px;
@@ -63,6 +62,13 @@
       font-size: 14px;
       font-weight: 500;
       display: inline-block;
+      border: 0;
+      cursor: pointer;
+    }
+
+    /* 🔹 Back button (same style, but slightly darker is okay; keep identical if you want) */
+    .toolbar .nav-link {
+      background: #1d4ed8;
     }
 
     /* 🔹 Allow pinch-zoom on the canvas area */
@@ -92,7 +98,10 @@
 
 <body>
   <div class="toolbar">
-    <!-- 🔹 Link back to HOME -->
+    <!-- ✅ NEW: One-level up (Back) -->
+    <button type="button" class="nav-link" id="back-btn">← 이전</button>
+
+    <!-- 🔹 Link back to HOME (always root) -->
     <a href="../index.html" class="home-link">← HOME</a>
 
     <button id="prev">◀</button>
@@ -104,7 +113,6 @@
 
     <span class="spacer"></span>
 
-    <!-- 🔹 Keep zoom controls (automatically hidden on mobile) -->
     <button id="zoom-out">－</button>
     <span id="zoom">100%</span>
     <button id="zoom-in">＋</button>
@@ -114,6 +122,41 @@
   <div id="viewer-wrap">
     <canvas id="pdf-render"></canvas>
   </div>
+
+  <script>
+    // ✅ Back navigation logic:
+    // 1) If URL has ?back=...  → go there (most stable)
+    // 2) Else if history exists → history.back()
+    // 3) Else fallback → HOME
+    (function () {
+      const btn = document.getElementById("back-btn");
+      if (!btn) return;
+
+      btn.addEventListener("click", () => {
+        try {
+          const params = new URLSearchParams(window.location.search);
+          const back = params.get("back");
+
+          if (back) {
+            // Allow relative paths like "purchase.html" or "../purchase/index.html"
+            window.location.href = back;
+            return;
+          }
+
+          // If user came from a previous page in-app, go back
+          if (window.history.length > 1) {
+            window.history.back();
+            return;
+          }
+
+          // Fallback
+          window.location.href = "../index.html";
+        } catch (e) {
+          window.location.href = "../index.html";
+        }
+      });
+    })();
+  </script>
 
   <script src="app.js"></script>
 </body>
