@@ -329,7 +329,7 @@
         </div>
         <div class="btn-row">
           <a class="btn"
-             href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf#zoom=page-width">
+             href="pdfjs/viewer.html?file=../Purchasing-Contract-Guideline.pdf&back=../index.html%23contract#zoom=page-width">
             문서 열기
           </a>
         </div>
@@ -381,17 +381,35 @@
     function showContract() {
       homeView.style.display = 'none';
       contractView.style.display = 'block';
+      window.location.hash = '#contract'; // ✅ 현재 뷰 상태를 해시에 반영
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     function showHome() {
       contractView.style.display = 'none';
       homeView.style.display = 'block';
+      // ✅ 홈으로 돌아오면 해시 제거(또는 #home으로)
+      if (window.location.hash) history.replaceState(null, '', window.location.pathname + window.location.search);
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
 
     openContractBtn.addEventListener('click', showContract);
     backHomeBtn.addEventListener('click', showHome);
+
+    // ✅ 새로고침/직접 진입 시 해시 기반으로 화면 복원
+    function syncViewFromHash() {
+      const hash = (window.location.hash || '').toLowerCase();
+      if (hash === '#contract') {
+        showContract();
+      } else {
+        showHome();
+      }
+    }
+
+    window.addEventListener('hashchange', syncViewFromHash);
+
+    // 첫 로드에서도 반영
+    syncViewFromHash();
 
     // "영상 보기" 버튼 클릭 시 YouTube 플레이어 노출
     if (playVideoBtn && contractVideoContainer) {
